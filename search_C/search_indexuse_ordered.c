@@ -35,7 +35,6 @@ void search_indexuse_ordered(char *value) {
 	diff = (diff+1)/2;
 	ptr += idx[ptr].num < valint ? diff : -diff;
     }
-    while (idx[ptr].num >= valint) ptr--;
     if (idx[ptr].num < valint) ptr++;
 
     char buf[1024];
