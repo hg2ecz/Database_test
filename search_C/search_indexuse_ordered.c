@@ -35,14 +35,19 @@ void search_indexuse_ordered(char *value) {
 	diff = (diff+1)/2;
 	ptr += idx[ptr].num < valint ? diff : -diff;
     }
-    ptr += idx[ptr].num < valint ? diff : -diff;
+    while (idx[ptr].num >= valint) ptr--;
+    if (idx[ptr].num < valint) ptr++;
 
     char buf[1024];
     int rowlen;
-    lseek(fd_log, idx[ptr].pos, SEEK_SET);
-    read(fd_log, buf, sizeof(buf));
-    for (rowlen=0; buf[rowlen]!='\n' && rowlen < sizeof(buf); rowlen++);
-    write(1, buf, ++rowlen);
+
+    while (idx[ptr].num == valint) {
+	lseek(fd_log, idx[ptr].pos, SEEK_SET);
+	read(fd_log, buf, sizeof(buf));
+	for (rowlen=0; buf[rowlen]!='\n' && rowlen < sizeof(buf); rowlen++);
+	write(1, buf, ++rowlen);
+	ptr++;
+    }
 
     close(fd_log);
     close(fd);
