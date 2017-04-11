@@ -21,7 +21,7 @@ int main(int argc, char **argv) {
 	{search_indexuse_partially, "search_indexuse_partially"},
 	{search_indexuse_partially_multi, "search_indexuse_partially_multi"},
 	{search_indexuse_ordered, "search_indexuse_ordered"},
-	{NULL, "\0"}
+	{NULL, ""}
     };
 
     struct timespec tstart, tend;
