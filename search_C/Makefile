@@ -4,7 +4,8 @@ LDFLAGS=-s
 TARGET=../search_c
 TARGET_GEN=indexgen_unordered_ordered
 
-OBJS=search_fopen.o search_mmap.o search_indexuse_unordered.o search_indexuse_partially.o search_indexuse_ordered.o benchmark.o
+OBJS = search_fopen.o search_mmap.o search_indexuse_unordered.o search_indexuse_partially.o
+OBJS+= search_indexuse_partially_multi.o search_indexuse_ordered.o benchmark.o
 
 all: $(OBJS)
 	$(CC) $(LDFLAGS) $(OBJS) -o $(TARGET)
