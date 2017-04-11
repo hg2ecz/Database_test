@@ -57,10 +57,10 @@ SQL:
 
 x86-64 (i5-3337u):
 mysql_insert ==> 54428.3 ms
-mysql_select ==>   2.10400 ms # keyint
+mysql_select ==>   0.34300 ms # keyint
 mysql_select ==> 597.97000 ms # nokeyint
 
 Rpi3:
 mysql_insert ==> 209994 ms
-mysql_select ==>   0.72100 ms # keyint
+mysql_select ==>   0.66700 ms # keyint
 mysql_select ==> 3221.41100 ms # nokeyint
