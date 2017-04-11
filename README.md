@@ -1,5 +1,11 @@
-# Database_test
 <pre>
+Configuration:
+* x86-64: i5-3337u with SSD
+* Rpi3 with Class10 microSD
+
+First steps:
+------------
+
 Compile & generate datafiles and indexfiles:
 $ cd search_C && make && cd ..
 $ ./generate_dbfile.py           # generate example data
@@ -19,18 +25,28 @@ Times:
 
 x86-64 (i5-3337u):
 
-search_fopen ==>  46.35689 ms/db
-search_mmap ==>  57.92695 ms/db
-search_indexuse_unordered ==>   1.15577 ms/db ---> indexfile sima append
+indexgen (all 4 index): 342 ms
+
+search.php: 3160 ms
+search.py: 1905 ms
+
+search_fopen ==>  46.35 ms/db
+search_mmap ==>  57.927 ms/db
+search_indexuse_unordered ==>   1.1558 ms/db ---> indexfile sima append
 search_indexuse_partially ==>   0.11131 ms/db    ---> 64k-nként sort + vége lineár
 search_indexuse_partially_multi ==>   0.07025 ms/db --> 512k+256k+128k+64k + 16960 db lineár
 search_indexuse_ordered ==>   0.02210 ms/db    ---> full sort
 
 Rpi3@32 bit:
 
-search_fopen ==> 468.33437 ms/db
-search_mmap ==> 189.33592 ms/db
-search_indexuse_unordered ==>   5.71894 ms/db
+indexgen (all 4 index): 1609 ms
+
+search.php: 369.15 ms
+search.py: 248.6 ms
+
+search_fopen ==> 468.3 ms/db
+search_mmap ==> 189.336 ms/db
+search_indexuse_unordered ==>   5.7189 ms/db
 search_indexuse_partially ==>   0.52165 ms/db
 search_indexuse_partially_multi ==>   0.27678 ms/db
 search_indexuse_ordered ==>   0.08101 ms/db
@@ -38,8 +54,14 @@ search_indexuse_ordered ==>   0.08101 ms/db
 
 SQL:
 
-Rpi3 & Class10 microSD:
-$ time ./import_data.py 
-real	9m10,327s
-user	2m48,850s
-sys	0m23,170s
+$ ./import_data.py 
+x86-64: 118725 ms
+Rpi3: 550327 ms
+
+$ time mysql -u speedtest -pspdtest speedtest -e "select * from test where keyint=&lt;number&gt";
+x86-64: 10 ms
+Rpi3: 41 ms
+
+$ time mysql -u speedtest -pspdtest speedtest -e "select * from test where nokeyint=&lt;number&gt";
+x86-64: 407 ms
+Rpi3: 3135 ms

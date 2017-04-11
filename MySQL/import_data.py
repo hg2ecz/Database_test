@@ -1,6 +1,7 @@
 #!/usr/bin/python
-import MySQLdb
 
+import time
+import MySQLdb
 
 def insert():
     conn = MySQLdb.connect(host="localhost", user="speedtest", passwd="spdtest", db="speedtest")
@@ -18,4 +19,8 @@ def insert():
     cur.close()
     conn.close()
 
+starttime = time.time()
 insert()
+endtime = time.time()
+
+print "%.3f ms"%(1000.*(endtime-starttime))
