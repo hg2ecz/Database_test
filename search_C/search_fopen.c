@@ -19,7 +19,7 @@ void search_fopen(char *value) {
 }
 
 #ifdef SELFTEST
-int main() {
-    search_fopen("14459606");
+int main(int argc, char **argv) {
+    search_fopen(argv[1]);
 }
 #endif

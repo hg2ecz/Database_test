@@ -40,7 +40,7 @@ void search_indexuse_unordered(char *value) {
 }
 
 #ifdef SELFTEST
-int main() {
-    search_indexuse_unordered("14459606");
+int main(int argc, char **argv) {
+    search_indexuse_unordered(argv[1]);
 }
 #endif

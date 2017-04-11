@@ -40,7 +40,7 @@ void search_indexuse_ordered(char *value) {
     char buf[1024];
     int rowlen;
 
-    while (idx[ptr].num == valint) {
+    while (idx[ptr].num == valint && ptr < maxnum) {
 	lseek(fd_log, idx[ptr].pos, SEEK_SET);
 	read(fd_log, buf, sizeof(buf));
 	for (rowlen=0; buf[rowlen]!='\n' && rowlen < sizeof(buf); rowlen++);
@@ -54,7 +54,7 @@ void search_indexuse_ordered(char *value) {
 
 
 #ifdef SELFTEST
-int main() {
-    search_indexuse_ordered("14459606");
+int main(int argc, char **argv) {
+    search_indexuse_ordered(argv[1]);
 }
 #endif

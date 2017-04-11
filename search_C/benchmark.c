@@ -30,6 +30,10 @@ int main(int argc, char **argv) {
     clock_gettime(CLOCK_PROCESS_CPUTIME_ID, &t[1]); tcalc(t, "search_unordered");
 
     clock_gettime(CLOCK_PROCESS_CPUTIME_ID, &t[0]);
+    for (int i=0; i<REPEAT; i++) search_indexuse_partially(value);
+    clock_gettime(CLOCK_PROCESS_CPUTIME_ID, &t[1]); tcalc(t, "search_partially");
+
+    clock_gettime(CLOCK_PROCESS_CPUTIME_ID, &t[0]);
     for (int i=0; i<REPEAT; i++) search_indexuse_ordered(value);
     clock_gettime(CLOCK_PROCESS_CPUTIME_ID, &t[1]); tcalc(t, "search_ordered");
     return 0;

@@ -5,6 +5,8 @@
 #include <sys/stat.h>
 #include <sys/mman.h>
 
+#define CHUNKSIZE (1<<LOG2CHUNKSIZE)
+
 struct _idx {
     int num;
     int pos;
@@ -53,6 +55,13 @@ void indexgen() {
 
     int fd_idx;
     fd_idx = open("dblogfile-idx_unordered.log", O_WRONLY | O_CREAT, 0644);
+    write(fd_idx, idx, idxnum*sizeof(struct _idx));
+    close(fd_idx);
+
+    for (int i=0; i<idxnum/CHUNKSIZE; i++) {
+	qsort(&idx[i*CHUNKSIZE], CHUNKSIZE, sizeof(struct _idx), compare);
+    }
+    fd_idx = open("dblogfile-idx_partially.log", O_WRONLY | O_CREAT, 0644);
     write(fd_idx, idx, idxnum*sizeof(struct _idx));
     close(fd_idx);
 

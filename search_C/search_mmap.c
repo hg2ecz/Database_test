@@ -31,7 +31,7 @@ void search_mmap(char *value) {
 }
 
 #ifdef SELFTEST
-int main() {
-    search_mmap("14459606");
+int main(int argc, char **argv) {
+    search_mmap(argv[1]);
 }
 #endif
