@@ -9,6 +9,12 @@ int main(int argc, char **argv) {
 	fprintf(stderr, "Paraméter: keresendő szám.\n");
 	return -1;
     }
+
+    // warm up CPU
+    for (int i=0; i<1000000000; i++) {
+	asm volatile ("nop");
+    }
+
     char *value = argv[1];
 
     const struct _func {

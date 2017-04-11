@@ -8,8 +8,8 @@ OBJS = search_fopen.o search_mmap.o search_indexuse_unordered.o search_indexuse_
 OBJS+= search_indexuse_partially_multi.o search_indexuse_ordered.o benchmark.o
 
 all: $(OBJS)
-	$(CC) $(LDFLAGS) $(OBJS) -o $(TARGET)
-	$(CC) $(CFLAGS) $(LDFLAGS) $(TARGET_GEN).c -o ../$(TARGET_GEN)
+	$(CC) $(OBJS) $(LDFLAGS) -o $(TARGET)
+	$(CC) $(TARGET_GEN).c $(CFLAGS) $(LDFLAGS) -o ../$(TARGET_GEN)
 
 clean:
 	rm -f $(OBJS) $(TARGET) ../$(TARGET_GEN)

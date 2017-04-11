@@ -53,15 +53,14 @@ search_indexuse_ordered ==>   0.08101 ms/db
 
 
 SQL:
+----
 
-$ ./import_data.py 
-x86-64: 118725 ms
-Rpi3: 550327 ms
+x86-64 (i5-3337u):
+mysql_insert ==> 54428.3 ms
+mysql_select ==>   2.10400 ms # keyint
+mysql_select ==> 597.97000 ms # nokeyint
 
-$ time mysql -u speedtest -pspdtest speedtest -e "select * from test where keyint=&lt;number&gt";
-x86-64: 10 ms
-Rpi3: 41 ms
-
-$ time mysql -u speedtest -pspdtest speedtest -e "select * from test where nokeyint=&lt;number&gt";
-x86-64: 407 ms
-Rpi3: 3135 ms
+Rpi3:
+mysql_insert ==> 209994 ms
+mysql_select ==>   0.72100 ms # keyint
+mysql_select ==> 3221.41100 ms # nokeyint
