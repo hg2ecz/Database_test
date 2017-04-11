@@ -4,12 +4,6 @@
 
 #define REPEAT 10
 
-int tcalc(struct timespec t[2], const char *melyik) {
-    double eltime=1000.0*(t[1].tv_sec - t[0].tv_sec) + (t[1].tv_nsec - t[0].tv_nsec)/1000000.;
-    printf("%s ==> %9.5f ms/db\n\n", melyik, eltime/REPEAT);
-    return eltime;
-}
-
 int main(int argc, char **argv) {
     if (argc != 2) {
 	fprintf(stderr, "Paraméter: keresendő szám.\n");
@@ -30,11 +24,13 @@ int main(int argc, char **argv) {
 	{NULL, "\0"}
     };
 
-    struct timespec t[2];
+    struct timespec tstart, tend;
     for (int f=0; func[f].fname; f++) {
-	clock_gettime(CLOCK_PROCESS_CPUTIME_ID, &t[0]);
+	clock_gettime(CLOCK_PROCESS_CPUTIME_ID, &tstart);
 	for (int i=0; i<REPEAT; i++) func[f].fname(value);
-	clock_gettime(CLOCK_PROCESS_CPUTIME_ID, &t[1]); tcalc(t, func[f].name);
+	clock_gettime(CLOCK_PROCESS_CPUTIME_ID, &tend);
+	double eltime_ms = 1000.0*(tend.tv_sec - tstart.tv_sec) + (tend.tv_nsec - tstart.tv_nsec)/1000000.;
+	printf("%s ==> %9.5f ms/db\n\n", func[f].name, eltime_ms/REPEAT);
     }
     return 0;
 }
