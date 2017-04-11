@@ -30,7 +30,7 @@ int main() {
 	    row[i++] = '\0';
 	}
 	char query[1000];
-	sprintf(query, "INSERT test (keyint, nokeyint, str) values (%s, %s, \"%s\")", field[0], field[1], field[2]);
+	sprintf(query, "INSERT test (keyint, nokeyint, str) values (%s, %s, \"%s\")", field[1], field[1], field[2]);
 	mysql_query(mysql, query);
     }
     fclose(f);
