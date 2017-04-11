@@ -14,7 +14,7 @@ void search_indexuse_partially_multi(char *value) {
     struct stat statbuf;
     int fd = open("dblogfile-idx_partially_multi.log", O_RDONLY);
     if (fd < 0) {
-	fprintf(stderr, "dblogfile-idx_partially.log not exist, please run indexgen_unordered_ordered.\n");
+	fprintf(stderr, "dblogfile-idx_partially_multi.log not exist, please run indexgen_unordered_ordered.\n");
 	return;
     }
     fstat(fd, &statbuf);
