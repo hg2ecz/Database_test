@@ -2,6 +2,7 @@
 #include <stdlib.h>
 #include <unistd.h>
 #include <fcntl.h>
+#include <time.h>
 #include <sys/stat.h>
 #include <sys/mman.h>
 
@@ -88,5 +89,13 @@ void indexgen() {
 }
 
 int main() {
+    struct timespec tstart, tend;
+    clock_gettime(CLOCK_PROCESS_CPUTIME_ID, &tstart);
+
     indexgen();
+
+    clock_gettime(CLOCK_PROCESS_CPUTIME_ID, &tend);
+    double eltime_ms = 1000.0*(tend.tv_sec - tstart.tv_sec) + (tend.tv_nsec - tstart.tv_nsec)/1000000.;
+    printf("indexgen (all 4 index) ==> %9.5f ms/db\n\n", eltime_ms);
+    return 0;
 }
