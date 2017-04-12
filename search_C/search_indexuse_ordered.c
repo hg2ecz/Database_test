@@ -28,8 +28,8 @@ void search_indexuse_ordered(char *value) {
 	return;
     }
 
-    int maxnum = statbuf.st_size/sizeof(struct _idx);
-    int diff = (maxnum+1)/2;
+    int maxidx = statbuf.st_size/sizeof(struct _idx);
+    int diff = (maxidx+1)/2;
     int ptr = diff;
     while (diff > 1) {
 	diff = (diff+1)/2;
@@ -40,7 +40,7 @@ void search_indexuse_ordered(char *value) {
     char buf[1024];
     int rowlen;
 
-    while (idx[ptr].num == valint && ptr < maxnum) {
+    while (idx[ptr].num == valint && ptr < maxidx) {
 	lseek(fd_log, idx[ptr].pos, SEEK_SET);
 	if (read(fd_log, buf, sizeof(buf)) < 0) puts("read error\n");
 	for (rowlen=0; buf[rowlen]!='\n' && rowlen < sizeof(buf); rowlen++);

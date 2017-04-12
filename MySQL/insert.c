@@ -4,14 +4,23 @@
 
 int a;
 
-int main() {
+int main(int argc, char **argv) {
+    char query[1000];
+    if (argc != 2) {
+	fprintf(stderr, "Parameter: table engine (InnoDB, MyISAM, Memory\n");
+	return -1;
+    }
     MYSQL *mysql = mysql_init(NULL);
     if (!mysql_real_connect(mysql, "localhost", "speedtest", "spdtest", "speedtest", 3306, NULL, 0)) {
 	fprintf(stderr, "Error: %s\n", mysql_error(mysql));
 	return -1;
     }
     mysql_query(mysql, "drop table if exists test");
-    mysql_query(mysql, "create table test (keyint int not null, nokeyint int not null, str varchar(50))");
+    sprintf(query, "create table test (keyint int not null, nokeyint int not null, str varchar(50)) engine=%s", argv[1]);
+    if (mysql_query(mysql, query)) {
+	fprintf(stderr, "Bad engine type. Use InnoDB or MyISAM or Memory as engine parameter.");
+	return -1;
+    }
     mysql_query(mysql, "alter table test add key(keyint)");
 
     mysql_autocommit(mysql, 0);
@@ -29,7 +38,6 @@ int main() {
 	    for (i=0; row[i]!=';' && row[i] != '\n'; i++);
 	    row[i++] = '\0';
 	}
-	char query[1000];
 	sprintf(query, "INSERT test (keyint, nokeyint, str) values (%s, %s, \"%s\")", field[1], field[1], field[2]);
 	mysql_query(mysql, query);
     }

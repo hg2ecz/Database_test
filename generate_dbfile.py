@@ -1,5 +1,7 @@
 #!/usr/bin/pypy
 
+import os
+import sys
 import time
 import random
 
@@ -13,8 +15,15 @@ def gen(rownum):
 	    print num, "-->", row,
     f.close()
 
-starttime = time.time()
-gen(1000*1000)
-endtime = time.time()
+if __name__ == '__main__':
+    if len(sys.argv) != 2:
+	print "Parameter: number of data row. For example: 1000000"
+	sys.exit(-1)
+    rownum = int(sys.argv[1])
 
-print "%.3f ms"%(1000.*(endtime-starttime))
+    starttime = time.time()
+    gen(rownum)
+    endtime = time.time()
+    print "%.3f ms"%(1000.*(endtime-starttime))
+
+    os.system('./indexgen_unordered_ordered')

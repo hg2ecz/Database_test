@@ -9,7 +9,7 @@
 void search_indexuse_unordered(char *value) {
     int valint = atoi(value);
 
-    struct stat statbuf;
+    struct stat statbuf, logfilestatbuf;
     int fd = open("dblogfile-idx_unordered.log", O_RDONLY);
     if (fd < 0) {
 	fprintf(stderr, "dblogfile-idx_ordered.log not exist, please run indexgen_unordered_ordered.\n");
@@ -27,12 +27,15 @@ void search_indexuse_unordered(char *value) {
 	fprintf(stderr, "dblogfile.log not exist, please run generate_dbfile.py.\n");
 	return;
     }
-    for (int i=0; i<statbuf.st_size/sizeof(struct _idx); i++) {
+    fstat(fd_log, &logfilestatbuf);
+    int maxidx = statbuf.st_size/sizeof(struct _idx);
+    for (int i=0; i<maxidx; i++) {
 	if (idx[i].num == valint) {
+	    int res;
 	    char buf[1000];
 	    lseek(fd_log, idx[i].pos, SEEK_SET);
-	    if (read(fd_log, buf, idx[i+1].pos-idx[i].pos) < 0) puts("write error\n");
-	    if (write(1, buf, idx[i+1].pos-idx[i].pos) < 0) puts("write error\n");
+	    if ((res = read(fd_log, buf, (i<maxidx-1 ? idx[i+1].pos : logfilestatbuf.st_size) - idx[i].pos)) < 0) puts("read error\n");
+	    if (write(1, buf, res) < 0) puts("write error\n");
 	}
     }
     close(fd_log);

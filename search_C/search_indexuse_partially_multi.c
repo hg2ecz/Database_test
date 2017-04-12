@@ -11,7 +11,7 @@
 void search_indexuse_partially_multi(char *value) {
     int valint = atoi(value);
 
-    struct stat statbuf;
+    struct stat statbuf, logfilestatbuf;
     int fd = open("dblogfile-idx_partially_multi.log", O_RDONLY);
     if (fd < 0) {
 	fprintf(stderr, "dblogfile-idx_partially_multi.log not exist, please run indexgen_unordered_ordered.\n");
@@ -29,17 +29,19 @@ void search_indexuse_partially_multi(char *value) {
 	fprintf(stderr, "dblogfile.log not exist, please run generate_dbfile.py.\n");
 	return;
     }
-    int maxnum = statbuf.st_size/sizeof(struct _idx);
+    fstat(fd_log, &logfilestatbuf);
+
+    int maxidx = statbuf.st_size/sizeof(struct _idx);
 
 // Here is indexnum/CHUNKSIZE pieces of ordered part
     int maxchunk=CHUNKSIZE;
-    int idxremain=maxnum;
+    int idxremain=maxidx;
     while (maxchunk <= idxremain) maxchunk<<=1; // double size
     while (idxremain >= CHUNKSIZE) {
 	maxchunk >>= 1;
 
 	int diff = maxchunk>>1;
-	int ptr = (maxnum-idxremain) + diff;
+	int ptr = (maxidx-idxremain) + diff;
 	while (diff) {
 	    diff >>= 1;
 	    ptr += idx[ptr].num < valint ? diff : -diff;
@@ -50,7 +52,7 @@ void search_indexuse_partially_multi(char *value) {
 	char buf[1024];
 	int rowlen;
 
-	while (idx[ptr].num == valint && ptr < maxnum-idxremain) { // new remain!
+	while (idx[ptr].num == valint && ptr < maxidx-idxremain) { // new remain!
 	    lseek(fd_log, idx[ptr].pos, SEEK_SET);
 	    if (read(fd_log, buf, sizeof(buf)) < 0) puts("read error\n");
 	    for (rowlen=0; buf[rowlen]!='\n' && rowlen < sizeof(buf); rowlen++);
@@ -61,12 +63,13 @@ void search_indexuse_partially_multi(char *value) {
     }
 
 // Last: unordered part
-    for (int i=maxnum-idxremain; i<maxnum; i++) {
+    for (int i=maxidx-idxremain; i<maxidx; i++) {
 	if (idx[i].num == valint) {
+	    int res;
 	    char buf[1000];
 	    lseek(fd_log, idx[i].pos, SEEK_SET);
-	    if (read(fd_log, buf, idx[i+1].pos-idx[i].pos) < 0) puts("read error\n");
-	    if (write(1, buf, idx[i+1].pos-idx[i].pos) < 0) puts("write error\n");
+	    if ((res = read(fd_log, buf, (i<maxidx-1 ? idx[i+1].pos : logfilestatbuf.st_size) - idx[i].pos)) < 0) puts("read error\n");
+	    if (write(1, buf, res) < 0) puts("write error\n");
 	}
     }
 
