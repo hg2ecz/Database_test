@@ -56,7 +56,7 @@ void indexgen() {
     // unordered
     int fd_idx;
     fd_idx = open("dblogfile-idx_unordered.log", O_WRONLY | O_CREAT, 0644);
-    write(fd_idx, idx, idxnum*sizeof(struct _idx));
+    if (write(fd_idx, idx, idxnum*sizeof(struct _idx)) < 0) puts("write error\n");
     close(fd_idx);
 
     // CHUNKSIZE + last
@@ -64,7 +64,7 @@ void indexgen() {
 	qsort(&idx[i*CHUNKSIZE], CHUNKSIZE, sizeof(struct _idx), compare);
     }
     fd_idx = open("dblogfile-idx_partially.log", O_WRONLY | O_CREAT, 0644);
-    write(fd_idx, idx, idxnum*sizeof(struct _idx));
+    if (write(fd_idx, idx, idxnum*sizeof(struct _idx)) < 0) puts("write error\n");
     close(fd_idx);
 
     // more (2^N)*CHUNKSIZE ... + last
@@ -77,13 +77,13 @@ void indexgen() {
 	idxremain -= maxchunk;
     }
     fd_idx = open("dblogfile-idx_partially_multi.log", O_WRONLY | O_CREAT, 0644);
-    write(fd_idx, idx, idxnum*sizeof(struct _idx));
+    if (write(fd_idx, idx, idxnum*sizeof(struct _idx)) < 0) puts("write error\n");
     close(fd_idx);
 
     // full ordered
     qsort(idx, idxnum, sizeof(struct _idx), compare);
     fd_idx = open("dblogfile-idx_ordered.log", O_WRONLY | O_CREAT, 0644);
-    write(fd_idx, idx, idxnum*sizeof(struct _idx));
+    if (write(fd_idx, idx, idxnum*sizeof(struct _idx)) < 0) puts("write error\n");
     close(fd_idx);
 }
 

@@ -24,7 +24,7 @@ void search_mmap(char *value) {
 	for (i=start; p[i]!=';'; i++);
 	i++;
 	for (j=0; p[i] == value[j]; i++, j++);
-	if (p[i] == ';' && value[j] == '\0') write(1, &p[start], ptr-start);
+	if (p[i] == ';' && value[j] == '\0') if (write(1, &p[start], ptr-start) < 0) puts("write error\n");
 	start = ptr;
     }
     close(fd);
