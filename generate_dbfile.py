@@ -12,4 +12,8 @@ def gen(rownum):
 	    print num, "-->", row,
     f.close()
 
+starttime = time.time()
 gen(1000*1000)
+endtime = time.time()
+
+print "%.3f ms"%(1000.*(endtime-starttime))
