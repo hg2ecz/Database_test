@@ -42,9 +42,9 @@ void search_indexuse_ordered(char *value) {
 
     while (idx[ptr].num == valint && ptr < maxnum) {
 	lseek(fd_log, idx[ptr].pos, SEEK_SET);
-	read(fd_log, buf, sizeof(buf));
+	if (read(fd_log, buf, sizeof(buf)) < 0) puts("read error\n");
 	for (rowlen=0; buf[rowlen]!='\n' && rowlen < sizeof(buf); rowlen++);
-	write(1, buf, ++rowlen);
+	if (write(1, buf, ++rowlen) < 0) puts("write error\n");
 	ptr++;
     }
 

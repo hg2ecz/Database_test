@@ -31,8 +31,8 @@ void search_indexuse_unordered(char *value) {
 	if (idx[i].num == valint) {
 	    char buf[1000];
 	    lseek(fd_log, idx[i].pos, SEEK_SET);
-	    read(fd_log, buf, idx[i+1].pos-idx[i].pos);
-	    write(1, buf, idx[i+1].pos-idx[i].pos);
+	    if (read(fd_log, buf, idx[i+1].pos-idx[i].pos) < 0) puts("write error\n");
+	    if (write(1, buf, idx[i+1].pos-idx[i].pos) < 0) puts("write error\n");
 	}
     }
     close(fd_log);

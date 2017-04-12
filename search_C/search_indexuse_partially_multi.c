@@ -52,9 +52,9 @@ void search_indexuse_partially_multi(char *value) {
 
 	while (idx[ptr].num == valint && ptr < maxnum-idxremain) { // new remain!
 	    lseek(fd_log, idx[ptr].pos, SEEK_SET);
-	    read(fd_log, buf, sizeof(buf));
+	    if (read(fd_log, buf, sizeof(buf)) < 0) puts("read error\n");
 	    for (rowlen=0; buf[rowlen]!='\n' && rowlen < sizeof(buf); rowlen++);
-	    write(1, buf, ++rowlen);
+	    if (write(1, buf, ++rowlen) < 0) puts("write error\n");
 	    ptr++;
 	}
 
@@ -65,8 +65,8 @@ void search_indexuse_partially_multi(char *value) {
 	if (idx[i].num == valint) {
 	    char buf[1000];
 	    lseek(fd_log, idx[i].pos, SEEK_SET);
-	    read(fd_log, buf, idx[i+1].pos-idx[i].pos);
-	    write(1, buf, idx[i+1].pos-idx[i].pos);
+	    if (read(fd_log, buf, idx[i+1].pos-idx[i].pos) < 0) puts("read error\n");
+	    if (write(1, buf, idx[i+1].pos-idx[i].pos) < 0) puts("write error\n");
 	}
     }
 
