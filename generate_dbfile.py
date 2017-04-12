@@ -1,5 +1,6 @@
 #!/usr/bin/pypy
 
+import time
 import random
 
 def gen(rownum):
