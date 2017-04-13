@@ -2,8 +2,6 @@
 #include <sys/time.h>
 #include <mysql/mysql.h>
 
-int a;
-
 int main(int argc, char **argv) {
     char query[1000];
     if (argc != 2) {
@@ -43,11 +41,12 @@ int main(int argc, char **argv) {
     }
     fclose(f);
 
+    mysql_commit(mysql);
+
     gettimeofday(&tend, NULL);
     double eltime_ms = 1000.0*(tend.tv_sec - tstart.tv_sec) + (tend.tv_usec - tstart.tv_usec)/1000.;
     printf("mysql_insert ==> %9.1f ms\n\n", eltime_ms);
 
-    mysql_commit(mysql);
     mysql_close(mysql);
 }
 

@@ -2,8 +2,6 @@
 #include <sys/time.h>
 #include <mysql/mysql.h>
 
-int a;
-
 int main(int argc, char **argv) {
     if (argc != 3) {
 	printf("Parameters: keyint | nokeyint    and    value\n");
