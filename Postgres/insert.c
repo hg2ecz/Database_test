@@ -24,6 +24,11 @@ int main() {
     }
     PQclear(res);
 
+    res = PQexec(conn, "BEGIN");
+    if (PQresultStatus(res) != PGRES_COMMAND_OK) {
+        do_exit(conn, res);
+    }
+
     sprintf(query, "create table test (keyint integer not null, nokeyint integer not null, str varchar(50))");
     res = PQexec(conn, query);
     if (PQresultStatus(res) != PGRES_COMMAND_OK) {
@@ -50,6 +55,12 @@ int main() {
 	PQclear(res);
     }
     fclose(f);
+
+    res = PQexec(conn, "COMMIT");
+    if (PQresultStatus(res) != PGRES_COMMAND_OK) {
+        do_exit(conn, res);
+    }
+    PQclear(res);
 
     gettimeofday(&tend, NULL);
     double eltime_ms = 1000.0*(tend.tv_sec - tstart.tv_sec) + (tend.tv_usec - tstart.tv_usec)/1000.;
