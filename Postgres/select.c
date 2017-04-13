@@ -1,5 +1,6 @@
 #include <stdio.h>
 #include <stdlib.h>
+#include <string.h>
 #include <sys/time.h>
 #include <postgresql/libpq-fe.h>
 
@@ -9,6 +10,10 @@ void do_exit(PGconn *conn) {
 }
 
 int main(int argc, char **argv) {
+    if (argc != 3 || (strcmp(argv[1], "keyint") && strcmp(argv[1], "nokeyint"))) {
+        printf("Parameters: keyint | nokeyint    and    value\n");
+        return -1;
+    }
     PGconn *conn = PQconnectdb("user=speedtest password=spdtest dbname=speedtest");
 
     if (PQstatus(conn) == CONNECTION_BAD) {

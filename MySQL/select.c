@@ -1,11 +1,12 @@
 #include <stdio.h>
+#include <string.h>
 #include <sys/time.h>
 #include <mysql/mysql.h>
 
 int main(int argc, char **argv) {
-    if (argc != 3) {
-	printf("Parameters: keyint | nokeyint    and    value\n");
-	return -1;
+    if (argc != 3 || (strcmp(argv[1], "keyint") && strcmp(argv[1], "nokeyint"))) {
+        printf("Parameters: keyint | nokeyint    and    value\n");
+        return -1;
     }
     // warm up CPU
     for (int i=0; i<1000000000; i++) {

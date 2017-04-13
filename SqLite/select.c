@@ -1,5 +1,6 @@
 #include <stdio.h>
 #include <stdlib.h>
+#include <string.h>
 #include <sys/time.h>
 #include <sqlite3.h>
 
@@ -20,6 +21,10 @@ int callback(void *NotUsed, int argc, char **argv, char **azColName) {
 }
 
 int main(int argc, char **argv) {
+    if (argc != 3 || (strcmp(argv[1], "keyint") && strcmp(argv[1], "nokeyint"))) {
+        printf("Parameters: keyint | nokeyint    and    value\n");
+        return -1;
+    }
     // warm up CPU
     for (int i=0; i<1000000000; i++) {
 	asm volatile ("nop");
