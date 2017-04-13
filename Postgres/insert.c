@@ -36,6 +36,12 @@ int main() {
     }
     PQclear(res);
 
+    res = PQexec(conn, "alter table test add key(keyint)");
+    if (PQresultStatus(res) != PGRES_COMMAND_OK) {
+        do_exit(conn, res); 
+    }
+    PQclear(res);
+
     struct timeval tstart, tend;
     gettimeofday(&tstart, NULL);
 
