@@ -36,7 +36,7 @@ int main() {
     }
     PQclear(res);
 
-    res = PQexec(conn, "alter table test add key(keyint)");
+    res = PQexec(conn, "CREATE INDEX keyint_idx ON test (keyint)");
     if (PQresultStatus(res) != PGRES_COMMAND_OK) {
         do_exit(conn, res); 
     }
